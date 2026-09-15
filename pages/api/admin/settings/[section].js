@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     if (!admin) return;
     const { title, subtitle } = req.body || {};
     await query(
-      `INSERT INTO \`SectionSetting\` (section, title, subtitle, updatedAt) VALUES (?, ?, ?, NOW(3))
+      `INSERT INTO \`sectionsetting\` (section, title, subtitle, updatedAt) VALUES (?, ?, ?, NOW(3))
        ON DUPLICATE KEY UPDATE title = VALUES(title), subtitle = VALUES(subtitle), updatedAt = NOW(3)`,
       [section, title || null, subtitle || null],
     );

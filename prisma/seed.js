@@ -328,7 +328,7 @@ async function main() {
 
   const hashedPassword = await bcrypt.hash(adminPassword, 10);
   await pool.query(
-    `INSERT INTO \`User\` (name, email, password, role, active) VALUES (?, ?, ?, 'ADMIN', true)
+    `INSERT INTO \`user\` (name, email, password, role, active) VALUES (?, ?, ?, 'ADMIN', true)
      ON DUPLICATE KEY UPDATE password = VALUES(password), name = VALUES(name), role = 'ADMIN', active = true`,
     [adminName, adminEmail, hashedPassword],
   );

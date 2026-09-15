@@ -21,8 +21,8 @@ export default async function handler(req, res) {
       query('SELECT * FROM `contentitem` WHERE section = ? ORDER BY groupName ASC, position ASC', [section]),
       query(
         `SELECT cc.*, u.id AS submitter_id, u.name AS submitter_name
-         FROM \`ContentChange\` cc
-         JOIN \`User\` u ON u.id = cc.submittedBy
+         FROM \`contentchange\` cc
+         JOIN \`user\` u ON u.id = cc.submittedBy
          WHERE cc.section = ? AND cc.status = 'PENDING'
          ORDER BY cc.createdAt ASC`,
         [section],

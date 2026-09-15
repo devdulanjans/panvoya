@@ -17,9 +17,9 @@ export default async function handler(req, res) {
         ci.id AS item_id, ci.section AS item_section, ci.groupName AS item_groupName,
         ci.slug AS item_slug, ci.position AS item_position, ci.data AS item_data,
         ci.clickCount AS item_clickCount, ci.createdAt AS item_createdAt, ci.updatedAt AS item_updatedAt
-     FROM \`ContentChange\` cc
-     JOIN \`User\` u ON u.id = cc.submittedBy
-     LEFT JOIN \`ContentItem\` ci ON ci.id = cc.contentItemId
+     FROM \`contentchange\` cc
+     JOIN \`user\` u ON u.id = cc.submittedBy
+     LEFT JOIN \`contentitem\` ci ON ci.id = cc.contentItemId
      WHERE cc.status = 'PENDING'
      ORDER BY cc.createdAt ASC`,
   );

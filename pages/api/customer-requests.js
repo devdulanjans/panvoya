@@ -23,7 +23,7 @@ export default async function handler(req, res) {
 
   const { firstName, email, phone, requirement, destination, travelDates } = parsed.data;
   const insertResult = await query(
-    `INSERT INTO \`CustomerRequest\` (firstName, email, phone, requirement, destination, travelDates)
+    `INSERT INTO \`customerrequest\` (firstName, email, phone, requirement, destination, travelDates)
      VALUES (?, ?, ?, ?, ?, ?)`,
     [firstName, email, phone, requirement, destination, travelDates],
   );

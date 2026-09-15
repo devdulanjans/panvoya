@@ -39,7 +39,7 @@ export default async function handler(req, res) {
   const fields = Object.keys(data);
   if (fields.length > 0) {
     const setClause = fields.map((field) => `${field} = ?`).join(', ');
-    await query(`UPDATE \`User\` SET ${setClause} WHERE id = ?`, [...fields.map((f) => data[f]), userId]);
+    await query(`UPDATE \`user\` SET ${setClause} WHERE id = ?`, [...fields.map((f) => data[f]), userId]);
   }
 
   const user = await queryOne(
