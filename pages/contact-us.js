@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 import SiteHeader from '../components/SiteHeader';
 import HeroSlider from '../components/HeroSlider';
@@ -37,8 +38,19 @@ const TYPE_META = {
 const TYPE_ORDER = ['Phone', 'WhatsApp', 'Email', 'Address'];
 
 export default function ContactUsPage({ searchIndex, packagesNavChildren, navVisibility, heroSlides, contactDetails, contactHeading, stickyHeader }) {
+  const router = useRouter();
   const { whatsapp } = useContact();
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    const { message } = router.query;
+    if (typeof message === 'string' && message) {
+      setForm((prev) => ({ ...prev, message }));
+      document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady]);
 
   const detailsByType = TYPE_ORDER.map((type) => ({
     type,
@@ -109,7 +121,7 @@ export default function ContactUsPage({ searchIndex, packagesNavChildren, navVis
         </section>
       )}
 
-      <section className={`${sectionStyles.section} ${sectionStyles.sectionAlt}`}>
+      <section id="contact-form" className={`${sectionStyles.section} ${sectionStyles.sectionAlt}`}>
         <div className={sectionStyles.contactGrid}>
           <img
             src="https://images.unsplash.com/photo-1423666639041-f56000c27a9a?auto=format&fit=crop&w=800&q=80"

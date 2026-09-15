@@ -17,6 +17,7 @@ import GeneralQuestions from '../components/GeneralQuestions';
 import TravelStats from '../components/TravelStats';
 import SiteFooter from '../components/SiteFooter';
 import FloatingWhatsApp from '../components/FloatingWhatsApp';
+import PromoOfferModal from '../components/PromoOfferModal';
 import { getPublicHomepageData } from '../lib/publicContent';
 
 export async function getServerSideProps() {
@@ -83,6 +84,8 @@ export default function Home({
 
   return (
     <div className="page-shell" id="top">
+      <PromoOfferModal offers={discountOffers} />
+
       <SiteHeader searchIndex={searchIndex} packagesNavChildren={packagesNavChildren} navVisibility={navVisibility} stickyHeader={stickyHeader} />
 
       <HeroSlider
