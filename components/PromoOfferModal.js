@@ -1,15 +1,22 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
-function pickRandomOffer(offers) {
-  if (!offers || offers.length === 0) return null;
-  return offers[Math.floor(Math.random() * offers.length)];
+const ROTATE_MS = 4500;
+
+function shuffle(list) {
+  const arr = [...list];
+  for (let i = arr.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
 }
 
 function buildOfferMessage(offer) {
   const parts = [`Hi, I'm interested in this offer: ${offer.title}.`];
-  if (offer.accent || offer.discount) {
-    parts.push(`${offer.accent || ''} ${offer.discount || ''}`.trim() + '.');
+  const details = [offer.accent, offer.discount].filter((value, i, arr) => value && arr.indexOf(value) === i);
+  if (details.length > 0) {
+    parts.push(details.join(' — ') + '.');
   }
   parts.push('Could you share more details?');
   return parts.join(' ');
@@ -17,17 +24,16 @@ function buildOfferMessage(offer) {
 
 export default function PromoOfferModal({ offers = [] }) {
   const router = useRouter();
-  const [offer, setOffer] = useState(null);
+  const [order, setOrder] = useState([]);
+  const [index, setIndex] = useState(0);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     if (offers.length === 0) return undefined;
 
-    const picked = pickRandomOffer(offers);
-    if (!picked) return undefined;
-
     const timer = setTimeout(() => {
-      setOffer(picked);
+      setOrder(shuffle(offers));
+      setIndex(0);
       setVisible(true);
     }, 900);
 
@@ -35,9 +41,21 @@ export default function PromoOfferModal({ offers = [] }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (!visible || order.length < 2) return undefined;
+
+    const interval = setInterval(() => {
+      setIndex((i) => (i + 1) % order.length);
+    }, ROTATE_MS);
+
+    return () => clearInterval(interval);
+  }, [visible, order.length]);
+
   const dismiss = () => {
     setVisible(false);
   };
+
+  const offer = order[index];
 
   const handleViewOffer = () => {
     dismiss();
@@ -65,6 +83,20 @@ export default function PromoOfferModal({ offers = [] }) {
           <button type="button" className="promo-modal-cta" onClick={handleViewOffer}>
             Claim This Offer
           </button>
+
+          {order.length > 1 && (
+            <div className="promo-modal-dots" aria-label="Other offers">
+              {order.map((item, i) => (
+                <button
+                  key={item.id ?? i}
+                  type="button"
+                  className={i === index ? 'active' : ''}
+                  aria-label={`Show offer ${i + 1} of ${order.length}`}
+                  onClick={() => setIndex(i)}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
