@@ -1,0 +1,150 @@
+.tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.tabButton {
+  padding: 10px 18px;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  color: #666;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.tabButtonActive {
+  border-bottom-color: var(--color-gold, #d4af37);
+  color: var(--color-navy, #0b2545);
+}
+
+.panel {
+  display: grid;
+  gap: 18px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.field input[type='text'],
+.field select,
+.field textarea {
+  padding: 9px 11px;
+  border: 1px solid #d8d8d8;
+  border-radius: 7px;
+  background: #fff;
+  font-size: 0.9rem;
+  font-family: inherit;
+  transition: border-color 0.15s ease;
+}
+
+.field input[type='text']:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--color-gold, #d4af37);
+}
+
+.field select {
+  appearance: none;
+  padding-right: 32px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%23666666' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+.checkboxOption input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-navy, #0b2545);
+  cursor: pointer;
+}
+
+.fieldWide {
+  grid-column: 1 / -1;
+}
+
+.checkboxGroup {
+  display: flex;
+  gap: 16px;
+}
+
+.checkboxOption {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.sectionTitle {
+  margin: 4px 0 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-navy, #0b2545);
+}
+
+.repeaterList {
+  display: grid;
+  gap: 14px;
+}
+
+.repeaterItem {
+  padding: 16px;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  background: #fafafa;
+  display: grid;
+  gap: 12px;
+}
+
+.repeaterHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.repeaterHeader strong {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.removeItemButton {
+  padding: 5px 12px;
+  border: 1px solid #d8d8d8;
+  border-radius: 6px;
+  background: #fff;
+  color: #c0392b;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.addItemButton {
+  justify-self: start;
+  padding: 8px 16px;
+  border: 1px dashed #bbb;
+  border-radius: 8px;
+  background: #fafafa;
+  color: #333;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.addItemButton:hover {
+  border-color: var(--color-navy, #0b2545);
+}

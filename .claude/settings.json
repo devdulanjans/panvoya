@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//tmp/**)",
+      "Bash(curl -s -b cookies9.txt -X DELETE http://localhost:3001/api/admin/packages/657 --max-time 10)",
+      "Bash(curl -s http://localhost:3001/_next/static/chunks/pages/admin/packages/%5Bid%5D.js --max-time 10 -o /tmp/pkgedit-chunk.js -w \"%{http_code} size=%{size_download}\\\\n\")",
+      "Bash(curl -s http://localhost:3001/packages/old-town-discovery-walk --max-time 15 -o /tmp/fixed-detail.html -w \"%{http_code}\\\\n\")",
+      "Bash(curl -s -b cookies11.txt -X DELETE http://localhost:3001/api/admin/packages/659 --max-time 10)",
+      "Bash(tail -30 /tmp/panvoya-dev5.log 2>/dev/null | grep -i \"error\" | grep -v \"autoprefixer\\\\|trace\\\\|_error\")",
+      "Bash(curl -s http://localhost:3001/packages/group-tours --max-time 15 -o /tmp/grouptours.html -w \"%{http_code}\\\\n\")",
+      "Bash(curl -s http://localhost:3001/packages/school-adventure-group-tour --max-time 15 -o /tmp/grouptour-detail.html -w \"%{http_code}\\\\n\")"
+    ]
+  }
+}

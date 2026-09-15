@@ -1,0 +1,102 @@
+.list {
+  display: grid;
+  gap: 14px;
+}
+
+.card {
+  padding: 16px 18px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.cardHeader strong {
+  font-size: 0.95rem;
+}
+
+.meta {
+  color: #777;
+  font-size: 0.8rem;
+}
+
+.payload {
+  margin: 10px 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #f7f7f7;
+  font-size: 0.8rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
+.changeGrid {
+  margin: 10px 0;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #f7f7f7;
+  display: grid;
+  gap: 8px;
+}
+
+.changeRow {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 10px;
+  font-size: 0.82rem;
+}
+
+.changeRow dt {
+  margin: 0;
+  color: #777;
+  font-weight: 600;
+}
+
+.changeRow dd {
+  margin: 0;
+  color: #222;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.changeRow dd a {
+  color: var(--color-navy, #0b2545);
+  word-break: break-all;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.approveButton {
+  padding: 7px 14px;
+  border: 0;
+  border-radius: 7px;
+  background: #1e7e34;
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.rejectButton {
+  padding: 7px 14px;
+  border: 0;
+  border-radius: 7px;
+  background: #c0392b;
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.muted {
+  color: #888;
+}

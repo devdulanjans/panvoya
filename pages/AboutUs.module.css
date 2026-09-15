@@ -1,0 +1,48 @@
+.storyGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 48px;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 860px) {
+  .storyGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.storyImage {
+  width: 100%;
+  border-radius: 16px;
+  object-fit: cover;
+  min-height: 300px;
+}
+
+.storyEyebrow {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--color-gold-dark, #b08a2a);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.storyHeading {
+  margin: 0 0 16px;
+  font-family: var(--font-heading, inherit);
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  color: var(--color-navy, #0b2545);
+}
+
+.storyText {
+  margin: 0 0 14px;
+  color: #555;
+  line-height: 1.7;
+}
+
+.storyText:last-child {
+  margin-bottom: 0;
+}

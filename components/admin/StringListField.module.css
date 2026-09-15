@@ -1,0 +1,42 @@
+.list {
+  display: grid;
+  gap: 8px;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+}
+
+.row input {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #d8d8d8;
+  border-radius: 7px;
+  font-size: 0.88rem;
+}
+
+.removeButton {
+  padding: 0 10px;
+  border: 1px solid #d8d8d8;
+  border-radius: 7px;
+  background: #fff;
+  color: #c0392b;
+  cursor: pointer;
+}
+
+.addButton {
+  justify-self: start;
+  padding: 6px 14px;
+  border: 1px dashed #bbb;
+  border-radius: 7px;
+  background: #fafafa;
+  color: #333;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.addButton:hover {
+  border-color: var(--color-navy, #0b2545);
+}

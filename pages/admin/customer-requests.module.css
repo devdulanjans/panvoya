@@ -1,0 +1,100 @@
+.panel {
+  padding: 20px;
+  margin-bottom: 24px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.panelHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.panelHeading h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.table th,
+.table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+  vertical-align: top;
+}
+
+.table th {
+  color: #777;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.contactCell small {
+  display: block;
+  color: #777;
+}
+
+.statusBadge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.statusNew {
+  background: #fff6e0;
+  color: #8a6100;
+}
+
+.statusContacted {
+  background: #e6f0ff;
+  color: #1d4ed8;
+}
+
+.statusClosed {
+  background: #e6f7ec;
+  color: #1e7e34;
+}
+
+.select {
+  padding: 5px 26px 5px 8px;
+  border: 1px solid #d8d8d8;
+  border-radius: 6px;
+  background: #fff;
+  font-family: inherit;
+  font-size: 0.8rem;
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%23666666' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+}
+
+.deleteButton {
+  padding: 5px 10px;
+  border: 1px solid #d8d8d8;
+  border-radius: 6px;
+  background: #fff;
+  color: #c0392b;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.deleteButton:hover {
+  border-color: #c0392b;
+}
+
+.muted {
+  color: #888;
+}

@@ -1,0 +1,524 @@
+.hero {
+  position: relative;
+  min-height: 380px;
+  display: flex;
+  align-items: flex-end;
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(7, 25, 48, 0.88) 0%, rgba(7, 25, 48, 0.35) 60%, rgba(7, 25, 48, 0.05) 100%);
+}
+
+.heroInner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 48px 24px 32px;
+}
+
+.heroBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.heroBadge {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.heroPriceTag {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: var(--color-gold-light, #e8cd73);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.heroTitle {
+  margin: 0 0 10px;
+  font-family: var(--font-heading, inherit);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+}
+
+.heroMeta {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.95rem;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1.7fr 1fr;
+  gap: 32px;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 40px 24px 70px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  padding: 26px;
+  margin-bottom: 28px;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid #eee;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+.cardTitle {
+  margin: 0 0 16px;
+  font-family: var(--font-heading, inherit);
+  font-size: 1.3rem;
+  color: var(--color-navy, #0b2545);
+}
+
+.description {
+  color: #444;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.description :global(p) {
+  margin: 0 0 12px;
+}
+
+.description :global(p:last-child) {
+  margin-bottom: 0;
+}
+
+.description :global(h2),
+.description :global(h3) {
+  margin: 18px 0 10px;
+  color: var(--color-navy, #0b2545);
+}
+
+.description :global(ul),
+.description :global(ol) {
+  margin: 0 0 12px;
+  padding-left: 22px;
+}
+
+.description :global(a) {
+  color: var(--color-navy, #0b2545);
+  text-decoration: underline;
+}
+
+.factsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.factItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.factIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--color-navy-tint, #e9edf3);
+  color: var(--color-navy, #0b2545);
+  font-size: 1.1rem;
+}
+
+.factLabel {
+  display: block;
+  color: #888;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+}
+
+.factValue {
+  display: block;
+  color: #171717;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.sectionHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.expandAllButton {
+  border: 0;
+  background: transparent;
+  color: var(--color-navy, #0b2545);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.itineraryList {
+  display: grid;
+  gap: 12px;
+}
+
+.itineraryDay {
+  border: 1px solid #eee;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.itineraryDayHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 14px 16px;
+  border: 0;
+  background: #fafafa;
+  cursor: pointer;
+  text-align: left;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #171717;
+}
+
+.itineraryDayArrow {
+  transition: transform 0.2s ease;
+  color: #888;
+}
+
+.itineraryDayArrowOpen {
+  transform: rotate(180deg);
+}
+
+.itineraryDayBody {
+  padding: 18px 16px;
+  display: grid;
+  gap: 14px;
+}
+
+.itineraryDayImage {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.itineraryOvernight {
+  margin: 0;
+  color: #777;
+  font-size: 0.82rem;
+}
+
+.itineraryDescription {
+  margin: 0;
+  color: #444;
+  line-height: 1.6;
+}
+
+.activityList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+}
+
+.activityList li {
+  color: #333;
+  font-size: 0.88rem;
+}
+
+.hotelGrid {
+  display: grid;
+  gap: 20px;
+}
+
+.hotelCard {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 18px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .hotelCard {
+    grid-template-columns: 1fr;
+  }
+}
+
+.hotelImage {
+  width: 100%;
+  height: 100%;
+  min-height: 140px;
+  object-fit: cover;
+}
+
+.hotelBody {
+  padding: 16px 18px 16px 0;
+}
+
+@media (max-width: 640px) {
+  .hotelBody {
+    padding: 0 16px 16px;
+  }
+}
+
+.hotelTerm {
+  display: inline-block;
+  margin-bottom: 6px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--color-gold-light, #e8cd73);
+  color: var(--color-navy, #0b2545);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.hotelName {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+}
+
+.hotelDescription {
+  margin: 0 0 10px;
+  color: #555;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.hotelGallery {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.hotelGalleryThumb {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.hotelLink {
+  display: inline-block;
+  padding: 7px 14px;
+  border-radius: 7px;
+  background: var(--color-navy, #0b2545);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.mapImage {
+  width: 100%;
+  border-radius: 12px;
+  display: block;
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 640px) {
+  .featuresGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.featureList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.featureList li {
+  display: flex;
+  gap: 8px;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.includeIcon {
+  color: #1e7e34;
+}
+
+.excludeIcon {
+  color: #c0392b;
+}
+
+.sidebar {
+  position: sticky;
+  top: 20px;
+  display: grid;
+  gap: 20px;
+}
+
+.priceCard {
+  padding: 24px;
+  border-radius: 14px;
+  background: var(--color-navy, #0b2545);
+  color: #fff;
+}
+
+.priceCardLabel {
+  margin: 0 0 6px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.priceCardAmounts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.priceCardAmount {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-gold-light, #e8cd73);
+}
+
+.enquireButton {
+  display: block;
+  width: 100%;
+  padding: 13px;
+  border: 0;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--color-gold, #d4af37) 0%, var(--color-gold-light, #e8cd73) 100%);
+  color: var(--color-navy, #0b2545);
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.trustNote {
+  margin: 12px 0 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.78rem;
+  text-align: center;
+}
+
+.customCard {
+  padding: 22px;
+  border-radius: 14px;
+  background: var(--color-navy-tint, #e9edf3);
+  text-align: center;
+}
+
+.customCard h3 {
+  margin: 0 0 6px;
+  color: var(--color-navy, #0b2545);
+  font-size: 1.05rem;
+}
+
+.customCard p {
+  margin: 0 0 14px;
+  color: #444;
+  font-size: 0.85rem;
+}
+
+.customCard a {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 7px;
+  background: var(--color-navy, #0b2545);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.relatedSection {
+  width: 100%;
+  padding: 50px 24px 64px;
+  background: #f7f8fa;
+  border-top: 1px solid #eee;
+}
+
+.relatedSectionInner {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.relatedHeading {
+  margin: 0 0 24px;
+  font-family: var(--font-heading, inherit);
+  font-size: 1.6rem;
+  color: var(--color-navy, #0b2545);
+  text-align: center;
+}
+
+.relatedGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.relatedCard {
+  display: block;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  overflow: hidden;
+  color: inherit;
+  text-decoration: none;
+  background: #fff;
+}
+
+.relatedImage {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.relatedBody {
+  padding: 14px 16px;
+}
+
+.relatedTitle {
+  margin: 0 0 6px;
+  font-size: 0.95rem;
+  color: #171717;
+}
+
+.notFound {
+  padding: 100px 24px;
+  text-align: center;
+}

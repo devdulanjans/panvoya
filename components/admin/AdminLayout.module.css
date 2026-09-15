@@ -1,0 +1,192 @@
+.shell {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+  background: #f4f6f9;
+  color: #171717;
+  font-family: var(--font-body, sans-serif);
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 18px;
+  background: var(--color-navy, #0b2545);
+  color: #fff;
+}
+
+.brand {
+  margin: 0 0 28px;
+  padding: 0 8px;
+  font-family: var(--font-heading, inherit);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.navGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.navGroupLabel {
+  margin: 18px 8px 6px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.navLink {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.navLink:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.navLinkActive {
+  background: var(--color-gold, #d4af37);
+  color: var(--color-navy, #0b2545);
+}
+
+.navToggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.82);
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.navToggle:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.navToggleArrow {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.75rem;
+}
+
+.navSubLink {
+  margin-left: 14px;
+  padding-left: 14px;
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 28px;
+  background: #fff;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.topbarTitle {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.topbarUser {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 0.85rem;
+}
+
+.roleBadge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--color-navy-tint, #e9edf3);
+  color: var(--color-navy, #0b2545);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.signOutButton {
+  padding: 7px 14px;
+  border: 1px solid #d8d8d8;
+  border-radius: 7px;
+  background: #fff;
+  color: #333;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.signOutButton:hover {
+  border-color: var(--color-navy, #0b2545);
+  color: var(--color-navy, #0b2545);
+}
+
+.content {
+  flex: 1;
+  padding: 28px;
+}
+
+@media (max-width: 860px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 14px;
+  }
+
+  .brand {
+    display: none;
+  }
+
+  .nav {
+    flex-direction: row;
+    gap: 6px;
+  }
+
+  .navGroupLabel {
+    display: none;
+  }
+
+  .navLink,
+  .navToggle {
+    white-space: nowrap;
+  }
+
+  .navSubLink {
+    margin-left: 0;
+    padding-left: 12px;
+    border-left: 0;
+  }
+}

@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum ChangeAction {
+  CREATE
+  UPDATE
+  DELETE
+}
+
+enum ChangeStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum RequestStatus {
+  NEW
+  CONTACTED
+  CLOSED
+}
+
+model User {
+  id        Int             @id @default(autoincrement())
+  name      String
+  email     String          @unique
+  password  String
+  role      Role            @default(USER)
+  active    Boolean         @default(true)
+  createdAt DateTime        @default(now())
+  submitted ContentChange[] @relation("submitted")
+  reviewed  ContentChange[] @relation("reviewed")
+}
+
+model SectionSetting {
+  id        Int      @id @default(autoincrement())
+  section   String   @unique @db.VarChar(64)
+  title     String?
+  subtitle  String?
+  updatedAt DateTime @updatedAt
+}
+
+model ContentItem {
+  id         Int             @id @default(autoincrement())
+  section    String          @db.VarChar(64)
+  groupName  String?         @db.VarChar(64)
+  slug       String?         @unique @db.VarChar(191)
+  position   Int             @default(0)
+  clickCount Int             @default(0)
+  data       Json
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+  changes    ContentChange[]
+
+  @@index([section, groupName, position])
+}
+
+model ContentChange {
+  id            Int          @id @default(autoincrement())
+  section       String       @db.VarChar(64)
+  action        ChangeAction
+  contentItemId Int?
+  contentItem   ContentItem? @relation(fields: [contentItemId], references: [id], onDelete: SetNull)
+  payload       Json?
+  baseUpdatedAt DateTime?
+  status        ChangeStatus @default(PENDING)
+  reviewNote    String?
+  submittedBy   Int
+  submitter     User         @relation("submitted", fields: [submittedBy], references: [id])
+  reviewedBy    Int?
+  reviewer      User?        @relation("reviewed", fields: [reviewedBy], references: [id])
+  reviewedAt    DateTime?
+  createdAt     DateTime     @default(now())
+
+  @@index([status, section])
+  @@index([contentItemId])
+}
+
+model CustomerRequest {
+  id          Int           @id @default(autoincrement())
+  firstName   String
+  email       String
+  phone       String
+  requirement String?
+  destination String?
+  travelDates String?
+  status      RequestStatus @default(NEW)
+  createdAt   DateTime      @default(now())
+
+  @@index([status])
+}
