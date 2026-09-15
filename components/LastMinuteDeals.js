@@ -26,7 +26,7 @@ export default function LastMinuteDeals({ deals = [], heading, subtitle }) {
               <p className="package-meta"><span>⌾ {item.location}</span><span>⌾ {item.duration}</span></p>
               <div className="package-action">
                 <div className="package-action-buttons">
-                  <a href={`https://wa.me/${whatsapp}?text=${encodeURIComponent(`Hi, Can I get more details for ${item.title}`)}`} target="_blank" rel="noreferrer">More Details ↗</a>
+                  <a href={`https://wa.me/${whatsapp}?text=${encodeURIComponent(`Hi, Can I get more details for ${item.title}`)}`} target="_blank" rel="noreferrer">Enquire Now ↗</a>
                   <a
                     href={`https://wa.me/${whatsapp}?text=${encodeURIComponent(`Hi, I'd like to make a reservation for ${item.title}`)}`}
                     target="_blank"

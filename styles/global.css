@@ -2694,7 +2694,7 @@ main {
   }
 
   .tour-search-box input {
-    font-size: 0.76rem;
+    font-size: 16px;
   }
 
   .tour-search-box button {
@@ -2744,7 +2744,7 @@ main {
   }
 
   .header-search input {
-    font-size: 0.82rem;
+    font-size: 16px;
   }
 
   .header-search-results {
@@ -3668,6 +3668,10 @@ main {
     padding-left: 10px;
   }
 
+  .custom-package-search input {
+    font-size: 16px;
+  }
+
   .custom-package-search button {
     padding: 0 12px;
   }
@@ -3802,5 +3806,57 @@ main {
   .back-to-top {
     right: 14px;
     bottom: 14px;
+  }
+}
+
+/* --- Mobile carousel fixes ---
+   .offers-track / .inspirations-track / .one-day-track all size their
+   cards as a fraction of a JS-computed --page-count (e.g. width/3),
+   assuming a fixed number of columns per "page". None of the mobile
+   breakpoints above ever changed that column count, so on a phone each
+   card rendered at roughly a third (or a half) of the screen width —
+   squeezed, overlapping content. Below 640px there's no good reason to
+   keep the paged/sliding behaviour at all, so this stacks every card
+   full-width instead and hides the now-inert page controls. */
+@media (max-width: 767px) {
+  .offers-track,
+  .inspirations-track,
+  .one-day-track {
+    display: flex;
+    flex-direction: column;
+    width: 100% !important;
+    transform: none !important;
+  }
+
+  .offer-card,
+  .inspiration-card,
+  .one-day-card {
+    flex-basis: auto !important;
+    width: 100%;
+  }
+
+  .offer-dots {
+    display: none;
+  }
+
+  .inspiration-arrow {
+    display: none;
+  }
+
+  .one-day-trips .package-dots {
+    display: none;
+  }
+
+  /* "More Details" / "Reservation" buttons on package cards were tiny
+     (0.67rem, minimal padding, 6px gap) — an easy mis-tap target on a
+     touchscreen, which is what made "More Details" feel like it was
+     opening WhatsApp instead. */
+  .package-action-buttons {
+    gap: 10px;
+  }
+
+  .package-action-buttons > a {
+    padding: 11px 14px;
+    font-size: 0.78rem;
   }
 }
