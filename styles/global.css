@@ -825,8 +825,8 @@ textarea {
 }
 
 .hero-slider {
-  min-height: 520px;
-  height: 520px;
+  height: clamp(380px, 70vh, 520px);
+  min-height: 380px;
   margin: 0;
   left: auto;
   right: auto;
@@ -1062,10 +1062,6 @@ main {
     min-width: max-content;
     gap: 25px;
     font-size: 0.82rem;
-  }
-
-  .hero-slider {
-    height: 540px;
   }
 
   .slide-overlay {
@@ -1307,11 +1303,6 @@ main {
   .nav-row::-webkit-scrollbar,
   .booking-tabs::-webkit-scrollbar {
     display: none;
-  }
-
-  .hero-slider {
-    height: 760px;
-    min-height: 760px;
   }
 
   .slide-overlay {
@@ -2525,11 +2516,6 @@ main {
   .site-nav {
     gap: 22px;
     font-size: 0.78rem;
-  }
-
-  .hero-slider {
-    height: 680px;
-    min-height: 680px;
   }
 
   .slide-overlay {
