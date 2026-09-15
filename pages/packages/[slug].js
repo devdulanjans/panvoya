@@ -16,7 +16,7 @@ export async function getServerSideProps(context) {
 
   const [homepageData, rawItem] = await Promise.all([
     getPublicHomepageData(),
-    queryOne('SELECT * FROM `ContentItem` WHERE slug = ?', [slug]),
+    queryOne('SELECT * FROM `contentitem` WHERE slug = ?', [slug]),
   ]);
   const item = mapContentItem(rawItem);
 

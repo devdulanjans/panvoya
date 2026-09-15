@@ -12,11 +12,11 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const items = await query('SELECT * FROM `ContentItem` WHERE section = ? ORDER BY clickCount DESC, position ASC', [SECTION]);
+  const items = await query('SELECT * FROM `contentitem` WHERE section = ? ORDER BY clickCount DESC, position ASC', [SECTION]);
 
   await withTransaction(async (conn) => {
     for (let index = 0; index < items.length; index += 1) {
-      await query('UPDATE `ContentItem` SET position = ?, updatedAt = NOW(3) WHERE id = ?', [index, items[index].id], conn);
+      await query('UPDATE `contentitem` SET position = ?, updatedAt = NOW(3) WHERE id = ?', [index, items[index].id], conn);
     }
   });
 

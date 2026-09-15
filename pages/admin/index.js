@@ -17,7 +17,7 @@ export async function getServerSideProps(context) {
   }
   const user = session.user;
 
-  const contentCounts = await query('SELECT section, COUNT(*) AS count FROM `ContentItem` GROUP BY section');
+  const contentCounts = await query('SELECT section, COUNT(*) AS count FROM `contentitem` GROUP BY section');
   const countsBySection = Object.fromEntries(contentCounts.map((row) => [row.section, Number(row.count)]));
 
   let pendingApprovalsCount = null;
@@ -28,17 +28,17 @@ export async function getServerSideProps(context) {
 
   if (user.role === 'ADMIN') {
     const [[pendingRow], [usersRow]] = await Promise.all([
-      query("SELECT COUNT(*) AS count FROM `ContentChange` WHERE status = 'PENDING'"),
-      query('SELECT COUNT(*) AS count FROM `User`'),
+      query("SELECT COUNT(*) AS count FROM `contentchange` WHERE status = 'PENDING'"),
+      query('SELECT COUNT(*) AS count FROM `user`'),
     ]);
     pendingApprovalsCount = Number(pendingRow.count);
     usersCount = Number(usersRow.count);
   } else {
     const submittedBy = Number(user.id);
     const [[pendingRow], [approvedRow], [rejectedRow]] = await Promise.all([
-      query("SELECT COUNT(*) AS count FROM `ContentChange` WHERE submittedBy = ? AND status = 'PENDING'", [submittedBy]),
-      query("SELECT COUNT(*) AS count FROM `ContentChange` WHERE submittedBy = ? AND status = 'APPROVED'", [submittedBy]),
-      query("SELECT COUNT(*) AS count FROM `ContentChange` WHERE submittedBy = ? AND status = 'REJECTED'", [submittedBy]),
+      query("SELECT COUNT(*) AS count FROM `contentchange` WHERE submittedBy = ? AND status = 'PENDING'", [submittedBy]),
+      query("SELECT COUNT(*) AS count FROM `contentchange` WHERE submittedBy = ? AND status = 'APPROVED'", [submittedBy]),
+      query("SELECT COUNT(*) AS count FROM `contentchange` WHERE submittedBy = ? AND status = 'REJECTED'", [submittedBy]),
     ]);
     myPendingCount = Number(pendingRow.count);
     myApprovedCount = Number(approvedRow.count);

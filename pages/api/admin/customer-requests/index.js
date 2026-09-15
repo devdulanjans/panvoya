@@ -10,6 +10,6 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const requests = await query('SELECT * FROM `CustomerRequest` ORDER BY createdAt DESC');
+  const requests = await query('SELECT * FROM `customerrequest` ORDER BY createdAt DESC');
   return res.status(200).json({ requests });
 }

@@ -43,7 +43,7 @@ export default async function handler(req, res) {
   }
 
   const user = await queryOne(
-    'SELECT id, name, email, role, active, createdAt FROM `User` WHERE id = ?',
+    'SELECT id, name, email, role, active, createdAt FROM `user` WHERE id = ?',
     [userId],
   );
 

@@ -16,7 +16,7 @@ export default async function handler(req, res) {
 
   if (req.method === 'GET') {
     const users = await query(
-      'SELECT id, name, email, role, active, createdAt FROM `User` ORDER BY createdAt ASC',
+      'SELECT id, name, email, role, active, createdAt FROM `user` ORDER BY createdAt ASC',
     );
     return res.status(200).json({ users });
   }
@@ -27,16 +27,16 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Invalid payload', issues: parsed.error.issues });
     }
 
-    const existing = await queryOne('SELECT id FROM `User` WHERE email = ?', [parsed.data.email]);
+    const existing = await queryOne('SELECT id FROM `user` WHERE email = ?', [parsed.data.email]);
     if (existing) return res.status(409).json({ error: 'A user with this email already exists.' });
 
     const hashedPassword = await bcrypt.hash(parsed.data.password, 10);
     const insertResult = await query(
-      'INSERT INTO `User` (name, email, password, role) VALUES (?, ?, ?, ?)',
+      'INSERT INTO `user` (name, email, password, role) VALUES (?, ?, ?, ?)',
       [parsed.data.name, parsed.data.email, hashedPassword, parsed.data.role],
     );
     const user = await queryOne(
-      'SELECT id, name, email, role, active, createdAt FROM `User` WHERE id = ?',
+      'SELECT id, name, email, role, active, createdAt FROM `user` WHERE id = ?',
       [insertResult.insertId],
     );
     return res.status(201).json({ user });

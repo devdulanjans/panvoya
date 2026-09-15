@@ -11,7 +11,7 @@ import styles from './AllPackages.module.css';
 export async function getServerSideProps() {
   const [homepageData, rawItems] = await Promise.all([
     getPublicHomepageData(),
-    query('SELECT * FROM `ContentItem` WHERE section = ? ORDER BY position ASC', ['tourPackages']),
+    query('SELECT * FROM `contentitem` WHERE section = ? ORDER BY position ASC', ['tourPackages']),
   ]);
   const items = rawItems.map(mapContentItem);
 

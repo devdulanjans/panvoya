@@ -284,7 +284,7 @@ async function seedFlatSection(section, items) {
       usedSlugs.add(slug);
     }
     await pool.query(
-      'INSERT INTO `ContentItem` (section, position, slug, data, updatedAt) VALUES (?, ?, ?, ?, NOW(3))',
+      'INSERT INTO `contentitem` (section, position, slug, data, updatedAt) VALUES (?, ?, ?, ?, NOW(3))',
       [section, i, slug, toJson({ ...items[i], slug })],
     );
   }
@@ -296,7 +296,7 @@ async function seedGroupedSection(section, groups) {
   for (const [groupName, items] of entries) {
     for (const [name, image] of items) {
       await pool.query(
-        'INSERT INTO `ContentItem` (section, groupName, position, data, updatedAt) VALUES (?, ?, ?, ?, NOW(3))',
+        'INSERT INTO `contentitem` (section, groupName, position, data, updatedAt) VALUES (?, ?, ?, ?, NOW(3))',
         [section, groupName, position, toJson({ name, image })],
       );
       position += 1;
@@ -309,7 +309,7 @@ async function seedGroupedItemsSection(section, groups) {
   for (const [groupName, items] of Object.entries(groups)) {
     for (const data of items) {
       await pool.query(
-        'INSERT INTO `ContentItem` (section, groupName, position, data, updatedAt) VALUES (?, ?, ?, ?, NOW(3))',
+        'INSERT INTO `contentitem` (section, groupName, position, data, updatedAt) VALUES (?, ?, ?, ?, NOW(3))',
         [section, groupName, position, toJson(data)],
       );
       position += 1;
@@ -333,9 +333,9 @@ async function main() {
     [adminName, adminEmail, hashedPassword],
   );
 
-  await pool.query('DELETE FROM `ContentChange`');
-  await pool.query('DELETE FROM `ContentItem`');
-  await pool.query('DELETE FROM `SectionSetting`');
+  await pool.query('DELETE FROM `contentchange`');
+  await pool.query('DELETE FROM `contentitem`');
+  await pool.query('DELETE FROM `sectionsetting`');
 
   await seedGroupedItemsSection('heroSlides', heroSlidesByPage);
   await seedFlatSection('tourPackages', tourPackages);
@@ -358,7 +358,7 @@ async function main() {
 
   for (const setting of sectionSettings) {
     await pool.query(
-      'INSERT INTO `SectionSetting` (section, title, subtitle, updatedAt) VALUES (?, ?, ?, NOW(3))',
+      'INSERT INTO `sectionsetting` (section, title, subtitle, updatedAt) VALUES (?, ?, ?, NOW(3))',
       [setting.section, setting.title, setting.subtitle],
     );
   }

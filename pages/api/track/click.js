@@ -12,7 +12,7 @@ export default async function handler(req, res) {
   }
 
   const result = await query(
-    "UPDATE `ContentItem` SET clickCount = clickCount + 1 WHERE id = ? AND section = 'tourPackages'",
+    "UPDATE `contentitem` SET clickCount = clickCount + 1 WHERE id = ? AND section = 'tourPackages'",
     [id],
   );
 

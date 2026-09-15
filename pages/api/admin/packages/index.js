@@ -11,7 +11,7 @@ export default async function handler(req, res) {
 
   if (req.method === 'GET') {
     const [rawItems, rawChanges] = await Promise.all([
-      query('SELECT * FROM `ContentItem` WHERE section = ? ORDER BY position ASC', [SECTION]),
+      query('SELECT * FROM `contentitem` WHERE section = ? ORDER BY position ASC', [SECTION]),
       query(
         `SELECT cc.*, u.id AS submitter_id, u.name AS submitter_name
          FROM \`ContentChange\` cc

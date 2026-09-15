@@ -13,7 +13,7 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     const user = await requireUser(req, res);
     if (!user) return;
-    const setting = await queryOne('SELECT * FROM `SectionSetting` WHERE section = ?', [section]);
+    const setting = await queryOne('SELECT * FROM `sectionsetting` WHERE section = ?', [section]);
     return res.status(200).json({ setting: setting || { section, title: '', subtitle: '' } });
   }
 
@@ -26,7 +26,7 @@ export default async function handler(req, res) {
        ON DUPLICATE KEY UPDATE title = VALUES(title), subtitle = VALUES(subtitle), updatedAt = NOW(3)`,
       [section, title || null, subtitle || null],
     );
-    const setting = await queryOne('SELECT * FROM `SectionSetting` WHERE section = ?', [section]);
+    const setting = await queryOne('SELECT * FROM `sectionsetting` WHERE section = ?', [section]);
     return res.status(200).json({ setting });
   }
 

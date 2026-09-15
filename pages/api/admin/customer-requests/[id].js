@@ -20,8 +20,8 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Invalid payload', issues: parsed.error.issues });
     }
 
-    await query('UPDATE `CustomerRequest` SET status = ? WHERE id = ?', [parsed.data.status, requestId]);
-    const request = await queryOne('SELECT * FROM `CustomerRequest` WHERE id = ?', [requestId]);
+    await query('UPDATE `customerrequest` SET status = ? WHERE id = ?', [parsed.data.status, requestId]);
+    const request = await queryOne('SELECT * FROM `customerrequest` WHERE id = ?', [requestId]);
     return res.status(200).json({ request });
   }
 
@@ -29,7 +29,7 @@ export default async function handler(req, res) {
     const admin = await requireAdmin(req, res);
     if (!admin) return;
 
-    await query('DELETE FROM `CustomerRequest` WHERE id = ?', [requestId]);
+    await query('DELETE FROM `customerrequest` WHERE id = ?', [requestId]);
     return res.status(200).json({ ok: true });
   }
 

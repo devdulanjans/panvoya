@@ -15,7 +15,7 @@ export default async function handler(req, res) {
 
   try {
     if (req.method === 'GET') {
-      const item = mapContentItem(await queryOne('SELECT * FROM `ContentItem` WHERE id = ?', [itemId]));
+      const item = mapContentItem(await queryOne('SELECT * FROM `contentitem` WHERE id = ?', [itemId]));
       if (!item || item.section !== SECTION) return res.status(404).json({ error: 'Package not found' });
       return res.status(200).json({ item });
     }
