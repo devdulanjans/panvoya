@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
-const DISMISS_KEY = 'panvoya-promo-dismissed';
-
 function pickRandomOffer(offers) {
   if (!offers || offers.length === 0) return null;
   return offers[Math.floor(Math.random() * offers.length)];
@@ -23,12 +21,10 @@ export default function PromoOfferModal({ offers = [] }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (offers.length === 0) return;
-    if (typeof window === 'undefined') return;
-    if (window.sessionStorage.getItem(DISMISS_KEY)) return;
+    if (offers.length === 0) return undefined;
 
     const picked = pickRandomOffer(offers);
-    if (!picked) return;
+    if (!picked) return undefined;
 
     const timer = setTimeout(() => {
       setOffer(picked);
@@ -41,11 +37,6 @@ export default function PromoOfferModal({ offers = [] }) {
 
   const dismiss = () => {
     setVisible(false);
-    try {
-      window.sessionStorage.setItem(DISMISS_KEY, '1');
-    } catch {
-      // ignore storage errors (e.g. private browsing)
-    }
   };
 
   const handleViewOffer = () => {
