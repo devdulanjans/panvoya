@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../lib/auth';
-import { prisma } from '../../lib/prisma';
+import { query } from '../../lib/db';
 import AdminLayout from '../../components/admin/AdminLayout';
 import { sectionKeys, getSectionConfig } from '../../lib/sections';
 import styles from './dashboard.module.css';
@@ -17,11 +17,8 @@ export async function getServerSideProps(context) {
   }
   const user = session.user;
 
-  const contentCounts = await prisma.contentItem.groupBy({
-    by: ['section'],
-    _count: { _all: true },
-  });
-  const countsBySection = Object.fromEntries(contentCounts.map((row) => [row.section, row._count._all]));
+  const contentCounts = await query('SELECT section, COUNT(*) AS count FROM `ContentItem` GROUP BY section');
+  const countsBySection = Object.fromEntries(contentCounts.map((row) => [row.section, Number(row.count)]));
 
   let pendingApprovalsCount = null;
   let usersCount = null;
@@ -30,17 +27,22 @@ export async function getServerSideProps(context) {
   let myRejectedCount = null;
 
   if (user.role === 'ADMIN') {
-    [pendingApprovalsCount, usersCount] = await Promise.all([
-      prisma.contentChange.count({ where: { status: 'PENDING' } }),
-      prisma.user.count(),
+    const [[pendingRow], [usersRow]] = await Promise.all([
+      query("SELECT COUNT(*) AS count FROM `ContentChange` WHERE status = 'PENDING'"),
+      query('SELECT COUNT(*) AS count FROM `User`'),
     ]);
+    pendingApprovalsCount = Number(pendingRow.count);
+    usersCount = Number(usersRow.count);
   } else {
     const submittedBy = Number(user.id);
-    [myPendingCount, myApprovedCount, myRejectedCount] = await Promise.all([
-      prisma.contentChange.count({ where: { submittedBy, status: 'PENDING' } }),
-      prisma.contentChange.count({ where: { submittedBy, status: 'APPROVED' } }),
-      prisma.contentChange.count({ where: { submittedBy, status: 'REJECTED' } }),
+    const [[pendingRow], [approvedRow], [rejectedRow]] = await Promise.all([
+      query("SELECT COUNT(*) AS count FROM `ContentChange` WHERE submittedBy = ? AND status = 'PENDING'", [submittedBy]),
+      query("SELECT COUNT(*) AS count FROM `ContentChange` WHERE submittedBy = ? AND status = 'APPROVED'", [submittedBy]),
+      query("SELECT COUNT(*) AS count FROM `ContentChange` WHERE submittedBy = ? AND status = 'REJECTED'", [submittedBy]),
     ]);
+    myPendingCount = Number(pendingRow.count);
+    myApprovedCount = Number(approvedRow.count);
+    myRejectedCount = Number(rejectedRow.count);
   }
 
   return {

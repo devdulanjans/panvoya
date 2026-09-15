@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { prisma } from '../../../../lib/prisma';
+import { query, queryOne } from '../../../../lib/db';
 import { requireUser, requireAdmin } from '../../../../lib/apiSession';
 
 const updateSchema = z.object({
@@ -20,10 +20,8 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Invalid payload', issues: parsed.error.issues });
     }
 
-    const request = await prisma.customerRequest.update({
-      where: { id: requestId },
-      data: parsed.data,
-    });
+    await query('UPDATE `CustomerRequest` SET status = ? WHERE id = ?', [parsed.data.status, requestId]);
+    const request = await queryOne('SELECT * FROM `CustomerRequest` WHERE id = ?', [requestId]);
     return res.status(200).json({ request });
   }
 
@@ -31,7 +29,7 @@ export default async function handler(req, res) {
     const admin = await requireAdmin(req, res);
     if (!admin) return;
 
-    await prisma.customerRequest.delete({ where: { id: requestId } });
+    await query('DELETE FROM `CustomerRequest` WHERE id = ?', [requestId]);
     return res.status(200).json({ ok: true });
   }
 

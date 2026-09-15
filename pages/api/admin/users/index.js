@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
-import { prisma } from '../../../../lib/prisma';
+import { query, queryOne } from '../../../../lib/db';
 import { requireAdmin } from '../../../../lib/apiSession';
 
 const createUserSchema = z.object({
@@ -15,10 +15,9 @@ export default async function handler(req, res) {
   if (!admin) return;
 
   if (req.method === 'GET') {
-    const users = await prisma.user.findMany({
-      select: { id: true, name: true, email: true, role: true, active: true, createdAt: true },
-      orderBy: { createdAt: 'asc' },
-    });
+    const users = await query(
+      'SELECT id, name, email, role, active, createdAt FROM `User` ORDER BY createdAt ASC',
+    );
     return res.status(200).json({ users });
   }
 
@@ -28,14 +27,18 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Invalid payload', issues: parsed.error.issues });
     }
 
-    const existing = await prisma.user.findUnique({ where: { email: parsed.data.email } });
+    const existing = await queryOne('SELECT id FROM `User` WHERE email = ?', [parsed.data.email]);
     if (existing) return res.status(409).json({ error: 'A user with this email already exists.' });
 
     const hashedPassword = await bcrypt.hash(parsed.data.password, 10);
-    const user = await prisma.user.create({
-      data: { name: parsed.data.name, email: parsed.data.email, password: hashedPassword, role: parsed.data.role },
-      select: { id: true, name: true, email: true, role: true, active: true, createdAt: true },
-    });
+    const insertResult = await query(
+      'INSERT INTO `User` (name, email, password, role) VALUES (?, ?, ?, ?)',
+      [parsed.data.name, parsed.data.email, hashedPassword, parsed.data.role],
+    );
+    const user = await queryOne(
+      'SELECT id, name, email, role, active, createdAt FROM `User` WHERE id = ?',
+      [insertResult.insertId],
+    );
     return res.status(201).json({ user });
   }
 

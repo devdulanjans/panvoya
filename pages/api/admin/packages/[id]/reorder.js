@@ -1,4 +1,4 @@
-import { prisma } from '../../../../../lib/prisma';
+import { query, withTransaction } from '../../../../../lib/db';
 import { requireAdmin } from '../../../../../lib/apiSession';
 
 const SECTION = 'tourPackages';
@@ -19,10 +19,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Invalid request' });
   }
 
-  const items = await prisma.contentItem.findMany({
-    where: { section: SECTION },
-    orderBy: { position: 'asc' },
-  });
+  const items = await query('SELECT * FROM `ContentItem` WHERE section = ? ORDER BY position ASC', [SECTION]);
 
   const index = items.findIndex((item) => item.id === itemId);
   if (index === -1) return res.status(404).json({ error: 'Package not found' });
@@ -35,10 +32,10 @@ export default async function handler(req, res) {
   const current = items[index];
   const neighbor = items[swapIndex];
 
-  await prisma.$transaction([
-    prisma.contentItem.update({ where: { id: current.id }, data: { position: neighbor.position } }),
-    prisma.contentItem.update({ where: { id: neighbor.id }, data: { position: current.position } }),
-  ]);
+  await withTransaction(async (conn) => {
+    await query('UPDATE `ContentItem` SET position = ?, updatedAt = NOW(3) WHERE id = ?', [neighbor.position, current.id], conn);
+    await query('UPDATE `ContentItem` SET position = ?, updatedAt = NOW(3) WHERE id = ?', [current.position, neighbor.id], conn);
+  });
 
   return res.status(200).json({ ok: true });
 }

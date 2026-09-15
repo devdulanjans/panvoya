@@ -4,15 +4,16 @@ import HeroSlider from '../../components/HeroSlider';
 import SiteFooter from '../../components/SiteFooter';
 import FloatingWhatsApp from '../../components/FloatingWhatsApp';
 import PackageListCard from '../../components/PackageListCard';
-import { prisma } from '../../lib/prisma';
+import { query, mapContentItem } from '../../lib/db';
 import { getPublicHomepageData } from '../../lib/publicContent';
 import styles from './AllPackages.module.css';
 
 export async function getServerSideProps() {
-  const [homepageData, items] = await Promise.all([
+  const [homepageData, rawItems] = await Promise.all([
     getPublicHomepageData(),
-    prisma.contentItem.findMany({ where: { section: 'tourPackages' }, orderBy: { position: 'asc' } }),
+    query('SELECT * FROM `ContentItem` WHERE section = ? ORDER BY position ASC', ['tourPackages']),
   ]);
+  const items = rawItems.map(mapContentItem);
 
   const packages = items
     .filter((item) => item.data.status === 'Public' && item.data.category === 'Group Tours')

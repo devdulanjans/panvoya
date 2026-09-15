@@ -1,10 +1,22 @@
 require('dotenv').config();
 
-const { PrismaClient } = require('@prisma/client');
+const mysql = require('mysql2/promise');
 const bcrypt = require('bcryptjs');
-const { slugify } = require('../lib/slug.js');
 
-const prisma = new PrismaClient();
+function slugify(text) {
+  return (text || '')
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+const pool = mysql.createPool({ uri: process.env.DATABASE_URL });
+
+function toJson(value) {
+  return value === undefined || value === null ? null : JSON.stringify(value);
+}
 
 const heroSlidesByPage = {
   home: [
@@ -260,7 +272,7 @@ const sectionSettings = [
 async function seedFlatSection(section, items) {
   const usedSlugs = new Set();
   for (let i = 0; i < items.length; i += 1) {
-    let slug;
+    let slug = null;
     if (section === 'tourPackages') {
       const base = slugify(items[i].title) || 'package';
       slug = base;
@@ -271,9 +283,10 @@ async function seedFlatSection(section, items) {
       }
       usedSlugs.add(slug);
     }
-    await prisma.contentItem.create({
-      data: { section, position: i, slug, data: { ...items[i], slug } },
-    });
+    await pool.query(
+      'INSERT INTO `ContentItem` (section, position, slug, data, updatedAt) VALUES (?, ?, ?, ?, NOW(3))',
+      [section, i, slug, toJson({ ...items[i], slug })],
+    );
   }
 }
 
@@ -282,9 +295,10 @@ async function seedGroupedSection(section, groups) {
   const entries = Object.entries(groups);
   for (const [groupName, items] of entries) {
     for (const [name, image] of items) {
-      await prisma.contentItem.create({
-        data: { section, groupName, position, data: { name, image } },
-      });
+      await pool.query(
+        'INSERT INTO `ContentItem` (section, groupName, position, data, updatedAt) VALUES (?, ?, ?, ?, NOW(3))',
+        [section, groupName, position, toJson({ name, image })],
+      );
       position += 1;
     }
   }
@@ -294,7 +308,10 @@ async function seedGroupedItemsSection(section, groups) {
   let position = 0;
   for (const [groupName, items] of Object.entries(groups)) {
     for (const data of items) {
-      await prisma.contentItem.create({ data: { section, groupName, position, data } });
+      await pool.query(
+        'INSERT INTO `ContentItem` (section, groupName, position, data, updatedAt) VALUES (?, ?, ?, ?, NOW(3))',
+        [section, groupName, position, toJson(data)],
+      );
       position += 1;
     }
   }
@@ -310,15 +327,15 @@ async function main() {
   }
 
   const hashedPassword = await bcrypt.hash(adminPassword, 10);
-  await prisma.user.upsert({
-    where: { email: adminEmail },
-    update: { password: hashedPassword, name: adminName, role: 'ADMIN', active: true },
-    create: { name: adminName, email: adminEmail, password: hashedPassword, role: 'ADMIN' },
-  });
+  await pool.query(
+    `INSERT INTO \`User\` (name, email, password, role, active) VALUES (?, ?, ?, 'ADMIN', true)
+     ON DUPLICATE KEY UPDATE password = VALUES(password), name = VALUES(name), role = 'ADMIN', active = true`,
+    [adminName, adminEmail, hashedPassword],
+  );
 
-  await prisma.contentChange.deleteMany();
-  await prisma.contentItem.deleteMany();
-  await prisma.sectionSetting.deleteMany();
+  await pool.query('DELETE FROM `ContentChange`');
+  await pool.query('DELETE FROM `ContentItem`');
+  await pool.query('DELETE FROM `SectionSetting`');
 
   await seedGroupedItemsSection('heroSlides', heroSlidesByPage);
   await seedFlatSection('tourPackages', tourPackages);
@@ -339,7 +356,12 @@ async function main() {
   await seedFlatSection('socialLinks', socialLinks);
   await seedFlatSection('siteSettings', siteSettings);
 
-  await prisma.sectionSetting.createMany({ data: sectionSettings });
+  for (const setting of sectionSettings) {
+    await pool.query(
+      'INSERT INTO `SectionSetting` (section, title, subtitle, updatedAt) VALUES (?, ?, ?, NOW(3))',
+      [setting.section, setting.title, setting.subtitle],
+    );
+  }
 
   console.log(`Seed complete. Admin login: ${adminEmail}`);
 }
@@ -350,5 +372,5 @@ main()
     process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect();
+    await pool.end();
   });

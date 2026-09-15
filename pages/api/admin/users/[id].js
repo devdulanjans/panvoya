@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
-import { prisma } from '../../../../lib/prisma';
+import { query, queryOne } from '../../../../lib/db';
 import { requireAdmin } from '../../../../lib/apiSession';
 
 const updateUserSchema = z.object({
@@ -36,11 +36,16 @@ export default async function handler(req, res) {
     data.password = await bcrypt.hash(data.password, 10);
   }
 
-  const user = await prisma.user.update({
-    where: { id: userId },
-    data,
-    select: { id: true, name: true, email: true, role: true, active: true, createdAt: true },
-  });
+  const fields = Object.keys(data);
+  if (fields.length > 0) {
+    const setClause = fields.map((field) => `${field} = ?`).join(', ');
+    await query(`UPDATE \`User\` SET ${setClause} WHERE id = ?`, [...fields.map((f) => data[f]), userId]);
+  }
+
+  const user = await queryOne(
+    'SELECT id, name, email, role, active, createdAt FROM `User` WHERE id = ?',
+    [userId],
+  );
 
   return res.status(200).json({ user });
 }

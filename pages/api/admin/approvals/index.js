@@ -1,4 +1,4 @@
-import { prisma } from '../../../../lib/prisma';
+import { query, mapContentChange, nestPrefixed, parseJson } from '../../../../lib/db';
 import { requireAdmin } from '../../../../lib/apiSession';
 
 export default async function handler(req, res) {
@@ -10,13 +10,30 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const changes = await prisma.contentChange.findMany({
-    where: { status: 'PENDING' },
-    include: {
-      submitter: { select: { id: true, name: true, email: true } },
-      contentItem: true,
-    },
-    orderBy: { createdAt: 'asc' },
+  const rawChanges = await query(
+    `SELECT
+        cc.*,
+        u.id AS submitter_id, u.name AS submitter_name, u.email AS submitter_email,
+        ci.id AS item_id, ci.section AS item_section, ci.groupName AS item_groupName,
+        ci.slug AS item_slug, ci.position AS item_position, ci.data AS item_data,
+        ci.clickCount AS item_clickCount, ci.createdAt AS item_createdAt, ci.updatedAt AS item_updatedAt
+     FROM \`ContentChange\` cc
+     JOIN \`User\` u ON u.id = cc.submittedBy
+     LEFT JOIN \`ContentItem\` ci ON ci.id = cc.contentItemId
+     WHERE cc.status = 'PENDING'
+     ORDER BY cc.createdAt ASC`,
+  );
+
+  const changes = rawChanges.map((row) => {
+    const withSubmitter = nestPrefixed(row, 'submitter_', 'submitter');
+    const withItem = nestPrefixed(withSubmitter, 'item_', 'contentItem');
+    const change = mapContentChange(withItem);
+    if (change.contentItem?.id != null) {
+      change.contentItem.data = parseJson(change.contentItem.data);
+    } else {
+      change.contentItem = null;
+    }
+    return change;
   });
 
   return res.status(200).json({ changes });

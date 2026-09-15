@@ -5,7 +5,7 @@ import SiteFooter from '../../components/SiteFooter';
 import FloatingWhatsApp from '../../components/FloatingWhatsApp';
 import PackagePriceList from '../../components/PackagePriceList';
 import { useContact } from '../../components/ContactContext';
-import { prisma } from '../../lib/prisma';
+import { queryOne, mapContentItem } from '../../lib/db';
 import { getPublicHomepageData } from '../../lib/publicContent';
 import { CURRENCY_SYMBOLS, hasRichContent } from '../../lib/packageSchema';
 import PackageGallery from '../../components/PackageGallery';
@@ -14,10 +14,11 @@ import styles from './PackageDetail.module.css';
 export async function getServerSideProps(context) {
   const { slug } = context.params;
 
-  const [homepageData, item] = await Promise.all([
+  const [homepageData, rawItem] = await Promise.all([
     getPublicHomepageData(),
-    prisma.contentItem.findUnique({ where: { slug } }),
+    queryOne('SELECT * FROM `ContentItem` WHERE slug = ?', [slug]),
   ]);
+  const item = mapContentItem(rawItem);
 
   if (!item || item.section !== 'tourPackages' || item.data.status !== 'Public') {
     return { notFound: true };

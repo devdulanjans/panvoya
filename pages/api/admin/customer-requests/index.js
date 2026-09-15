@@ -1,4 +1,4 @@
-import { prisma } from '../../../../lib/prisma';
+import { query } from '../../../../lib/db';
 import { requireUser } from '../../../../lib/apiSession';
 
 export default async function handler(req, res) {
@@ -10,6 +10,6 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const requests = await prisma.customerRequest.findMany({ orderBy: { createdAt: 'desc' } });
+  const requests = await query('SELECT * FROM `CustomerRequest` ORDER BY createdAt DESC');
   return res.status(200).json({ requests });
 }

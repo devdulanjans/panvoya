@@ -1,4 +1,4 @@
-import { prisma } from '../../../../lib/prisma';
+import { queryOne, mapContentItem } from '../../../../lib/db';
 import { requireUser } from '../../../../lib/apiSession';
 import { packageSchema } from '../../../../lib/packageSchema';
 import { updateContent, deleteContent, NotFoundError, ConflictError } from '../../../../lib/contentWorkflow';
@@ -15,7 +15,7 @@ export default async function handler(req, res) {
 
   try {
     if (req.method === 'GET') {
-      const item = await prisma.contentItem.findUnique({ where: { id: itemId } });
+      const item = mapContentItem(await queryOne('SELECT * FROM `ContentItem` WHERE id = ?', [itemId]));
       if (!item || item.section !== SECTION) return res.status(404).json({ error: 'Package not found' });
       return res.status(200).json({ item });
     }

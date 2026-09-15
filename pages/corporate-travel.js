@@ -7,16 +7,17 @@ import FloatingWhatsApp from '../components/FloatingWhatsApp';
 import PackageListCard from '../components/PackageListCard';
 import TrustedPartners from '../components/TrustedPartners';
 import { useContact } from '../components/ContactContext';
-import { prisma } from '../lib/prisma';
+import { query, mapContentItem } from '../lib/db';
 import { getPublicHomepageData } from '../lib/publicContent';
 import listStyles from './packages/AllPackages.module.css';
 import styles from './CorporateTravel.module.css';
 
 export async function getServerSideProps() {
-  const [homepageData, items] = await Promise.all([
+  const [homepageData, rawItems] = await Promise.all([
     getPublicHomepageData(),
-    prisma.contentItem.findMany({ where: { section: 'tourPackages' }, orderBy: { position: 'asc' } }),
+    query('SELECT * FROM `ContentItem` WHERE section = ? ORDER BY position ASC', ['tourPackages']),
   ]);
+  const items = rawItems.map(mapContentItem);
 
   const packages = items
     .filter((item) => item.data.status === 'Public' && item.data.category === 'Corporate Travel')

@@ -1,4 +1,4 @@
-import { prisma } from '../../../../lib/prisma';
+import { query, mapContentItem, mapContentChange, nestPrefixed } from '../../../../lib/db';
 import { requireUser } from '../../../../lib/apiSession';
 import { packageSchema } from '../../../../lib/packageSchema';
 import { createContent, ConflictError } from '../../../../lib/contentWorkflow';
@@ -10,14 +10,19 @@ export default async function handler(req, res) {
   if (!user) return;
 
   if (req.method === 'GET') {
-    const [items, pendingChanges] = await Promise.all([
-      prisma.contentItem.findMany({ where: { section: SECTION }, orderBy: { position: 'asc' } }),
-      prisma.contentChange.findMany({
-        where: { section: SECTION, status: 'PENDING' },
-        include: { submitter: { select: { id: true, name: true } } },
-        orderBy: { createdAt: 'asc' },
-      }),
+    const [rawItems, rawChanges] = await Promise.all([
+      query('SELECT * FROM `ContentItem` WHERE section = ? ORDER BY position ASC', [SECTION]),
+      query(
+        `SELECT cc.*, u.id AS submitter_id, u.name AS submitter_name
+         FROM \`ContentChange\` cc
+         JOIN \`User\` u ON u.id = cc.submittedBy
+         WHERE cc.section = ? AND cc.status = 'PENDING'
+         ORDER BY cc.createdAt ASC`,
+        [SECTION],
+      ),
     ]);
+    const items = rawItems.map(mapContentItem);
+    const pendingChanges = rawChanges.map((row) => mapContentChange(nestPrefixed(row, 'submitter_', 'submitter')));
     return res.status(200).json({ items, pendingChanges });
   }
 

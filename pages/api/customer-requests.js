@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { prisma } from '../../lib/prisma';
+import { query } from '../../lib/db';
 
 const requestSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
@@ -21,6 +21,11 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Invalid payload', issues: parsed.error.issues });
   }
 
-  const request = await prisma.customerRequest.create({ data: parsed.data });
-  return res.status(201).json({ id: request.id });
+  const { firstName, email, phone, requirement, destination, travelDates } = parsed.data;
+  const insertResult = await query(
+    `INSERT INTO \`CustomerRequest\` (firstName, email, phone, requirement, destination, travelDates)
+     VALUES (?, ?, ?, ?, ?, ?)`,
+    [firstName, email, phone, requirement, destination, travelDates],
+  );
+  return res.status(201).json({ id: insertResult.insertId });
 }
