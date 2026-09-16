@@ -2662,20 +2662,6 @@ main {
     font-size: 0.62rem;
   }
 
-  .footer-contact-row {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .footer-contact-intro {
-    grid-column: auto;
-  }
-
-  .footer-main {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-
   .footer-column {
     gap: 11px;
   }
@@ -2819,13 +2805,14 @@ main {
   }
 
   .footer-contact-row {
-    grid-template-columns: 1fr 1fr;
-    gap: 22px 14px;
+    grid-template-columns: 1fr;
+    gap: 18px;
     padding: 24px 0;
   }
 
-  .footer-contact-intro {
-    grid-column: 1 / -1;
+  .footer-contact-intro,
+  .footer-contact {
+    grid-column: auto;
   }
 
   .footer-contact-intro > span,
@@ -2844,19 +2831,19 @@ main {
   }
 
   .footer-main {
-    grid-template-columns: 1fr 1fr;
-    gap: 38px 24px;
+    grid-template-columns: 1fr;
+    gap: 32px;
     padding: 46px 0;
   }
 
   .footer-brand {
-    grid-column: 1 / -1;
+    grid-column: auto;
   }
 
   .footer-bottom {
     flex-direction: column;
     align-items: flex-start;
-    padding: 18px 0;
+    padding: 18px 0 76px;
   }
 }
 
