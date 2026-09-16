@@ -656,9 +656,16 @@ textarea {
   font-weight: 700;
 }
 
-.help-link,
-.site-nav a.active {
+.help-link {
   color: var(--color-navy);
+}
+
+.site-nav > .nav-item > a.active {
+  color: var(--color-gold-dark, #b08a2a);
+}
+
+.site-nav > .nav-item:has(> a.active) {
+  box-shadow: inset 0 -3px 0 var(--color-gold, #d4af37);
 }
 
 .language {
@@ -2451,8 +2458,23 @@ main {
     color: #777;
   }
 
-  .drawer-nav > .drawer-item:first-child .drawer-item-row a {
-    color: var(--color-navy);
+  .drawer-item-row a.active {
+    color: var(--color-gold-dark, #b08a2a);
+  }
+
+  .drawer-item.depth-0 > .drawer-item-row {
+    position: relative;
+  }
+
+  .drawer-item.depth-0 > .drawer-item-row:has(a.active)::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    left: -16px;
+    width: 4px;
+    border-radius: 0 4px 4px 0;
+    background: var(--color-gold, #d4af37);
   }
 
   .drawer-toggle {
